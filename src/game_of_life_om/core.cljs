@@ -49,10 +49,9 @@
 
 
 (defn make-step!
-  "Swpa! the world with the new state."
+  "Swap! the world with the new state."
   []
-  (swap! cells-state step)
-  (reset! board (populate @cells-state)))
+  (swap! cells-state step))
 
 
 
@@ -63,6 +62,7 @@
    (let [style (when cell "live")]
      (dom/div #js {:className style} ""))))
 
+
 (defn board-view
   "Display of the entire board."
   [app owner]
@@ -72,12 +72,13 @@
 
 (om/root
  board-view
- board
- {:target (. js/document (getElementById "board"))})
+ cells-state
+ {:target (. js/document (getElementById "board"))
+  :fn populate})
 
 ;;; Animate !
 
-(js/setInterval make-step! 500)
+(js/setInterval make-step! 1000)
 
 
 (defn animate []
