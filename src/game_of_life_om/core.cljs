@@ -1,6 +1,8 @@
 (ns game-of-life-om.core
+  (:require-macros [dommy.macros :refer [node sel sel1]])
   (:require [om.core :as om :include-macros true]
-            [om.dom :as dom :include-macros true]))
+            [om.dom :as dom :include-macros true]
+            [dommy.core :as dommy]))
 
 (enable-console-print!)
 
@@ -78,7 +80,17 @@
 
 ;;; Animate !
 
-(js/setInterval make-step! 1000)
+#_(js/setInterval make-step! 500)
+
+
+(defn mark!
+  "Mark in pink all the divs by direct dom manipulation."
+  []
+  (doseq [el (sel [:#visualizer :div])]
+    (dommy/add-class! el :marker)))
+
+(dommy/listen! (sel1 :button.mark)
+                :click mark!)
 
 
 (defn animate []

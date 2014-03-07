@@ -39,3 +39,7 @@ button.mark {
 #visualizer div.live {
    background-color: green;
 }
+
+.marker {
+  background-color : pink;
+}
