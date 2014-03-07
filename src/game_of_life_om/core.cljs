@@ -73,6 +73,9 @@
   (swap! cells-state step))
 
 
+;;;;;;;;;;;;;;; Events handlers ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 
 ;;;;;;;;;;;;;; Om components ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -85,7 +88,8 @@
                   (let [style (when s "live")]
                     (dom/div #js {:className style
                                   :id id
-                                  :onClick #(put! chan id)} "")))))
+                                  :onMouseOver #(put! chan [:hover id])
+                                  :onClick #(put! chan [:click id])} "")))))
 (defn board-view
   "Display of the entire board."
   [app owner]
@@ -96,22 +100,31 @@
                          (om/build-all cell-view app {:state state})))))
 
 
+(defn capture! [app id]
+  (om/transact! app (fn [cells] (let [cell (->cell id)]
+                                                        (if (contains? cells cell)
+                                                          (disj cells cell)
+                                                          (conj cells (->cell id)))))))
+
+
 (defn app-view
   "Display of the entire board."
   [app owner]
   (reify
     om/IInitState
     (init-state [_]
-                {:chan (chan)})
+                {:chan (chan)
+                 :capture false})
     om/IWillMount
     (will-mount [_]
                 (let [chan (om/get-state owner [:chan])]
                  (go (loop []
-                       (let [id (<! chan)]
-                         (om/transact! app (fn [cells] (let [cell (->cell id)]
-                                                        (if (contains? cells cell)
-                                                          (disj cells cell)
-                                                          (conj cells (->cell id)))))))
+                       (let [[e id] (<! chan)]
+                         (condp = e
+                           :click (om/update-state! owner :capture not)
+                           :hover )
+                         (when (om/get-state owner [:capture])
+                           (capture! app id)))
                        (recur)))))
     om/IRenderState
     (render-state [_ state]
@@ -138,7 +151,7 @@
 
 ;;;;;;;;;;;;;;;;;;; Animate ! ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#_(js/setInterval make-step! 500)
+#_(js/setInterval make-step! 200)
 
 
 #_(prn @cells-state)
