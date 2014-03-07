@@ -25,10 +25,7 @@
       :when (or (= n 3) (and (= n 2) (cells loc)))]
      loc)))
 
-
-(def cells-state (atom #{[2 0] [2 1] [2 2] [1 2] [0 1]}))
-
-
+;;;;;;;;;;;;;;; Utils ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn ->loc
   "Give the absolute position in one dimension."
@@ -36,8 +33,13 @@
   [(+ x (* size y))])
 
 
-(def empty-board (vec (repeat (* size size) nil)))
 
+;;;;;;;;;;;;;;;; States ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(def cells-state (atom #{[2 0] [2 1] [2 2] [1 2] [0 1]}))
+
+
+(def empty-board (vec (repeat (* size size) nil)))
 
 
 (defn populate
@@ -56,6 +58,8 @@
   (swap! cells-state step))
 
 
+
+;;;;;;;;;;;;;; Om components ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn cell-view
   "Display of a single cell."
@@ -78,10 +82,7 @@
  {:target (. js/document (getElementById "board"))
   :fn populate})
 
-;;; Animate !
-
-#_(js/setInterval make-step! 500)
-
+;;;;;;;;;;; Mark ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn mark!
   "Mark in pink all the divs by direct dom manipulation."
@@ -91,6 +92,14 @@
 
 (dommy/listen! (sel1 :button.mark)
                 :click mark!)
+
+
+;;;;;;;;;;;;;;;;;;; Animate ! ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+#_(js/setInterval make-step! 500)
+
+
+
 
 
 (defn animate []
