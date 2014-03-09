@@ -43,3 +43,7 @@ button.mark {
 .marker {
   background-color : pink;
 }
+.captured {
+
+  background-color : blue;
+}
