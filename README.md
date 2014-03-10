@@ -15,3 +15,12 @@ Based on David Nolen's template : mies-om
 
 
 Open the project with LightTable
+
+You are presented en empty world, free of any cell.
+
+
+You can create cells by the mouse action :
+
+`click, hover, click`
+
+The second click will add the cells to the world.
