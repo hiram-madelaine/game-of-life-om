@@ -1,7 +1,8 @@
 (ns game-of-life-om.core
   (:require-macros [dommy.macros :refer [node sel sel1]]
                    [cljs.core.async.macros :refer [go]])
-  (:require [om.core :as om :include-macros true]
+  (:require [game-of-life-om.cgrand :refer [step]]
+            [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [dommy.core :as dommy]
             [cljs.core.async :refer [chan put! <!]]))
@@ -10,22 +11,7 @@
 
 (def size 32)
 
-;;;;; cgrand solution of game of life
 
-
-(defn neighbours
-  [[x y]]
-  (for [dx [-1 0 1] dy [-1 0 1]
-        :when (not= 0 dx dy)] [(+ dx x) (+ dy y)]))
-
-(defn step
-  "Yields the next state of the world"
-  [cells]
-  (set
-   (for
-     [[loc n] (frequencies (mapcat neighbours cells))
-      :when (or (= n 3) (and (= n 2) (cells loc)))]
-     loc)))
 
 ;;;;;;;;;;;;;;; Utils ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -74,6 +60,20 @@
   (swap! cells-state step))
 
 
+
+(defn capturing?
+  "Indicate if capturing mode is on/off"
+  [owner]
+  (om/get-state owner [:capture]))
+
+
+(defn wipe-board!
+  "Kill living cells and new ones"
+  [app owner]
+  (om/update! app #{})
+  (om/set-state! owner :captured #{})
+  (om/set-state! owner :capture false))
+
 ;;;;;;;;;;;;;;; Events handlers ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmulti board-event (fn [[e _] app owner] e))
@@ -81,19 +81,26 @@
 
 (defmethod board-event :hover
   [[_ id] app owner]
-  (when (om/get-state owner [:capture])
+  (when (capturing? owner)
     (om/update-state! owner [:captured] #(conj % id))))
 
 
 (defmethod board-event :click
   [[_ id] app owner]
   (om/update-state! owner [:captured] #(conj % id))
-  (when (om/get-state owner [:capture])
-    (let [new-cells (map ->cell (om/get-state owner [:captured]))
-          _ (prn new-cells)]
+  (when (capturing? owner)
+    (let [new-cells (map ->cell (om/get-state owner [:captured]))]
       (om/transact! app #(set (concat % new-cells))))
     (om/set-state! owner [:captured] #{}))
   (om/update-state! owner [:capture] not))
+
+
+(defmethod board-event :key
+  [[_ key] app owner]
+  (condp = key
+    27 (if (capturing? owner) (om/set-state! owner [:capture] false))
+    32 (wipe-board! app owner)
+    (prn key)))
 
 ;;;;;;;;;;;;;; Om components ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -114,8 +121,10 @@
   [app owner]
   (reify
     om/IRenderState
-    (render-state [_ state]
-                  (apply dom/div #js {:id "visualizer"}
+    (render-state [_ {:as state :keys [chan]}]
+                  (apply dom/div #js {:id "visualizer"
+                                      :tabIndex 1
+                                      :onKeyDown #(put! chan  [:key (.-which  %)])}
                          (om/build-all cell-view app {:state state})))))
 
 
@@ -144,14 +153,20 @@
                        (recur)))))
     om/IRenderState
     (render-state [_ state]
-     (om/build board-view app {:fn populate
-                               :state state}))))
+                  (dom/div nil
+                           (dom/button #js {:onClick #(om/update! app #{})
+                                            :className "kill"} "wipe board !")
+                           (om/build board-view app {:fn populate
+                                                     :state state})))))
 
 
 (om/root
  app-view
  cells-state
  {:target (. js/document (getElementById "board"))})
+
+
+;;============ DOM related =================================
 
 ;;;;;;;;;;; Mark ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -170,7 +185,7 @@
 (js/setInterval make-step! 200)
 
 
-(prn @cells-state)
+#_(prn @cells-state)
 #_(reset! cells-state hand-circles )
 
 (defn animate []

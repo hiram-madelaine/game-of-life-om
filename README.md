@@ -19,8 +19,17 @@ Open the project with LightTable
 You are presented en empty world, free of any cell.
 
 
-You can create cells by the mouse action :
+You can create new cells by the mouse actions :
 
 `click, hover, click`
 
-The second click will add the cells to the world.
+The second click will add the new cells to the world.
+
+
+It is possible to create non contiguous cells by pressing `esc` key before the second `click`.
+
+
+Click on "Wipe board" button to kill all living cells and new ones.
+
+
+Click on the "Mark" button to color each location with direct DOM manipulation.

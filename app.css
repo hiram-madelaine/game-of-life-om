@@ -18,6 +18,12 @@ button.mark {
   right: 10px;
 }
 
+button.kill {
+  position: absolute;
+  bottom: 10px;
+  right: 70px;
+}
+
 #visualizer div:hover {
   box-shadow:
     white 1px 1px 0,
