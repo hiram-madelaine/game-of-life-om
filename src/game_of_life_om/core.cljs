@@ -9,13 +9,26 @@
 
 (enable-console-print!)
 
-(def size 32)
+(def size 48)
 
 (def ESCAPE_KEY 27)
 
 (def SPACE_BAR 32)
+;;============ DOM related =================================
 
-;;;;;;;;;;;;;;; Utils ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;; Mark ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn mark!
+  "Mark in pink all the divs by direct DOM manipulation."
+  []
+  (doseq [el (sel [:#visualizer :div])]
+    (dommy/add-class! el :marker)))
+
+(dommy/listen! (sel1 :button.mark)
+                :click mark!)
+
+
+;;;;;;;;;;;;;;;Coords Utils ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn ->loc
   "Give the absolute position in one dimension."
@@ -29,18 +42,23 @@
 
 ;;;;;;;;;;;;;;;; States ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(def organic #{[14 13] [14 14] [16 13] [16 14] [15 15] [15 12] [13 15]})
-(def organic-2 #{[14 13] [14 14] [15 15] [13 15] [15 12] [16 13] [16 14] [17 12]})
-(def T->blinker #{[11 12] [12 12] [13 12] [12 13]})
-(def blinker #{[12 12] [14 10] [11 6] [14 8] [10 6] [14 9] [8 8] [11 12] [8 9] [10 12] [8 10] [12 6]})
-(def glider  #{[2 0] [2 1] [2 2] [1 2] [0 1]})
-(def hand-circles #{[5 11] [6 12] [8 13] [11 15] [13 16] [14 19] [18 22] [4 11] [5 10] [6 13] [8 14] [11 14] [12 18] [13 19] [14 16] [17 22] [4 12] [8 15] [11 13] [12 19] [15 16] [16 22] [4 13] [8 16] [12 12] [6 8] [9 17] [6 9] [11 18] [10 18] [12 15] [20 21] [22 19] [11 8] [12 8] [15 11] [5 19] [10 8] [13 8] [14 11] [5 18] [7 20] [8 6] [10 5] [11 6] [13 11] [14 8] [11 5] [12 11] [15 8] [9 10] [11 12] [12 4] [14 6] [4 14] [6 16] [9 9] [13 4] [15 6] [4 15] [6 17] [8 10] [10 9] [12 6] [14 4] [4 16] [6 14] [8 11] [13 6] [4 17] [6 15] [8 12] [15 3] [16 3] [17 4] [19 6] [20 6] [21 7] [15 2] [16 4] [18 6] [19 5] [22 9] [17 6] [16 6] [18 4] [21 8] [11 4] [17 8] [18 9] [19 10] [16 8] [19 9] [18 8] [16 11] [17 12] [20 14] [9 21] [20 15] [22 17] [10 21] [17 14] [23 15] [17 13] [19 11] [14 22] [17 16] [18 17] [23 13] [15 22] [16 16] [17 15] [18 18] [19 17] [20 11] [23 12] [12 22] [17 18] [19 16] [20 12] [22 10] [16 18] [20 13]} )
-(def space-invader #{[11 11] [12 11] [13 11] [14 11] [15 11] [11 12] [15 12] [11 13] [12 13] [13 13] [14 13] [15 13]})
+(def predefined {:pentadecathlon #{[15 19] [15 18] [15 17] [15 16] [15 15] [15 14] [15 13] [15 12] [15 11] [15 20]}
+                 :pulsar #{[11 14] [13 13] [14 14] [12 13] [14 15] [15 14] [12 14] [13 15] [12 15] [14 13]}
+                 :space-schip-1 #{[15 14] [14 13] [14 10] [16 10] [17 12] [17 11] [17 14] [16 14] [17 13]}
+                 :glider-gun #{[12 16] [15 19] [16 19] [14 19] [15 17] [13 18] [15 13] [12 15] [13 14] [14 13] [16 27] [13 37] [12 37] [12 38] [14 4] [13 38] [15 4] [15 3] [14 3] [12 24] [15 27] [13 24] [14 24] [15 25] [16 13] [17 14] [10 27] [11 27] [14 23] [13 23] [17 18] [18 15] [11 25] [12 23] [15 20] [18 16]}
+                 :organic #{[14 13] [14 14] [16 13] [16 14] [15 15] [15 12] [13 15]}
+                 :organic-2 #{[14 13] [14 14] [15 15] [13 15] [15 12] [16 13] [16 14] [17 12]}
+                 :T->blinker #{[11 12] [12 12] [13 12] [12 13]}
+                 :blinker #{[12 12] [14 10] [11 6] [14 8] [10 6] [14 9] [8 8] [11 12] [8 9] [10 12] [8 10] [12 6]}
+                 :glider  #{[2 0] [2 1] [2 2] [1 2] [0 1]}
+                 :hand-circles #{[5 11] [6 12] [8 13] [11 15] [13 16] [14 19] [18 22] [4 11] [5 10] [6 13] [8 14] [11 14] [12 18] [13 19] [14 16] [17 22] [4 12] [8 15] [11 13] [12 19] [15 16] [16 22] [4 13] [8 16] [12 12] [6 8] [9 17] [6 9] [11 18] [10 18] [12 15] [20 21] [22 19] [11 8] [12 8] [15 11] [5 19] [10 8] [13 8] [14 11] [5 18] [7 20] [8 6] [10 5] [11 6] [13 11] [14 8] [11 5] [12 11] [15 8] [9 10] [11 12] [12 4] [14 6] [4 14] [6 16] [9 9] [13 4] [15 6] [4 15] [6 17] [8 10] [10 9] [12 6] [14 4] [4 16] [6 14] [8 11] [13 6] [4 17] [6 15] [8 12] [15 3] [16 3] [17 4] [19 6] [20 6] [21 7] [15 2] [16 4] [18 6] [19 5] [22 9] [17 6] [16 6] [18 4] [21 8] [11 4] [17 8] [18 9] [19 10] [16 8] [19 9] [18 8] [16 11] [17 12] [20 14] [9 21] [20 15] [22 17] [10 21] [17 14] [23 15] [17 13] [19 11] [14 22] [17 16] [18 17] [23 13] [15 22] [16 16] [17 15] [18 18] [19 17] [20 11] [23 12] [12 22] [17 18] [19 16] [20 12] [22 10] [16 18] [20 13]}
+                 :space-invader #{[11 11] [12 11] [13 11] [14 11] [15 11] [11 12] [15 12] [11 13] [12 13] [13 13] [14 13] [15 13]}
+                 })
+
 (def cells-state (atom #{}))
 
-
 (def empty-board (vec (for [i (range 0 (* size size))]
-                               [i false])))
+                        [i false])))
 
 
 (defn populate
@@ -48,12 +66,12 @@
   [gen]
   (reduce
    (fn [b c]
-     (let [l (->loc c)]
-       (if (<= 0 l (dec (* size size)))
+     (let [l (->loc c)
+           b-size (dec (* size size))]
+       (if (<= 0 l b-size)
          (assoc-in b [l 1] true)
          b)))
    empty-board gen))
-
 
 
 (defn make-step!
@@ -68,6 +86,9 @@
   [owner]
   (om/get-state owner [:capture]))
 
+(defn capture!
+  [owner id]
+  (om/update-state! owner [:captured] #(conj % id)))
 
 (defn wipe-board!
   "Kill living cells and new ones"
@@ -84,12 +105,12 @@
 (defmethod board-event :hover
   [[_ id] app owner]
   (when (capturing? owner)
-    (om/update-state! owner [:captured] #(conj % id))))
+    (capture! owner id)))
 
 
 (defmethod board-event :click
   [[_ id] app owner]
-  (om/update-state! owner [:captured] #(conj % id))
+  (capture! owner id)
   (when (capturing? owner)
     (let [new-cells (map ->cell (om/get-state owner [:captured]))]
       (om/transact! app #(set (concat % new-cells))))
@@ -103,6 +124,26 @@
     ESCAPE_KEY (if (capturing? owner) (om/set-state! owner [:capture] false))
     SPACE_BAR (wipe-board! app owner)
     (prn key)))
+
+
+(defmethod board-event :select
+  [[_ key] app owner]
+  (let [predef (om/get-shared owner :predef)
+        new-cells ((keyword key) predef)]
+    (om/transact! app #(set (concat % new-cells)))))
+
+
+(defmethod board-event :start
+  [[_ delay] app owner]
+  (when-not (om/get-state owner :timer-id)
+   (let [timer-id (js/setInterval make-step! delay)]
+    (om/set-state! owner :timer-id timer-id ))))
+
+(defmethod board-event :stop
+  [[_ _] app owner]
+  (let [timer-id (om/get-state owner :timer-id)]
+    (js/clearInterval timer-id)
+    (om/set-state! owner :timer-id nil )))
 
 ;;;;;;;;;;;;;; Om components ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -128,13 +169,26 @@
                                       :tabIndex 1
                                       :onKeyDown #(put! chan  [:key (.-which  %)])}
                          (om/build-all cell-view app {:state state})))))
+(defn selection-view
+  [app owner]
+ (reify
+   om/IRenderState
+   (render-state [_ {:as state :keys [chan]}]
+                 (let [predef (om/get-shared owner :predef)]
+                   (apply dom/select #js {:className "predef"
+                                          :onChange (fn [e] (put! chan [:select (-> e .-target .-value)]))}
+                          (map #(dom/option #js {:value (name %)} (name %)) (keys predef)))))) )
 
-
-(defn capture! [app id]
-  (om/transact! app (fn [cells] (let [cell (->cell id)]
-                                                        (if (contains? cells cell)
-                                                          (disj cells cell)
-                                                          (conj cells (->cell id)))))))
+(defn start-button
+  [app owner]
+  (reify
+    om/IRenderState
+    (render-state [_ {:as state :keys [chan delay]}]
+                  (dom/div nil
+                           (dom/button #js {:className "stop"
+                                            :onClick #(put! chan [:stop nil])} "Stop" )
+                           (dom/button #js {:className "start"
+                                            :onClick #(put! chan [:start delay])} "Start" )))))
 
 
 (defn app-view
@@ -145,7 +199,9 @@
     (init-state [_]
                 {:chan (chan)
                  :capture false
-                 :captured #{}})
+                 :captured #{}
+                 :timer-id nil
+                 :delay 270})
     om/IWillMount
     (will-mount [_]
                 (let [chan (om/get-state owner [:chan])]
@@ -156,6 +212,8 @@
     om/IRenderState
     (render-state [_ state]
                   (dom/div nil
+                           (om/build start-button app {:state state})
+                           (om/build selection-view app {:state state})
                            (dom/button #js {:onClick #(om/update! app #{})
                                             :className "kill"} "wipe board !")
                            (om/build board-view app {:fn populate
@@ -165,33 +223,5 @@
 (om/root
  app-view
  cells-state
- {:target (. js/document (getElementById "board"))})
-
-
-;;============ DOM related =================================
-
-;;;;;;;;;;; Mark ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn mark!
-  "Mark in pink all the divs by direct dom manipulation."
-  []
-  (doseq [el (sel [:#visualizer :div])]
-    (dommy/add-class! el :marker)))
-
-(dommy/listen! (sel1 :button.mark)
-                :click mark!)
-
-
-;;;;;;;;;;;;;;;;;;; Animate ! ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(js/setInterval make-step! 200)
-
-
-#_(prn @cells-state)
-#_(reset! cells-state hand-circles )
-
-(defn animate []
-  (.requestAnimationFrame js/window animate)
-  (make-step!))
-
-#_(animate)
+ {:target (. js/document (getElementById "board"))
+  :shared {:predef predefined}})

@@ -23,6 +23,21 @@ button.kill {
   bottom: 10px;
   right: 70px;
 }
+button.start {
+  position: absolute;
+  bottom: 10px;
+  right: 350;
+}
+button.stop {
+  position: absolute;
+  bottom: 10px;
+  right: 310;
+}
+select.predef {
+  position: absolute;
+  bottom: 10px;
+  right: 160px;
+}
 
 #visualizer div:hover {
   box-shadow:
@@ -33,12 +48,12 @@ button.kill {
 }
 
 #visualizer div {
-  width: 3.125%;
-  height: 3.125%;
+  width: 2.084%;
+  height: 2.084%;
   float: left;
 }
 
-#visualizer div:nth-child(32n + 1) {
+#visualizer div:nth-child(48n + 1) {
   clear: left;
 }
 
