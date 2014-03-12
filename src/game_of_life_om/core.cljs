@@ -11,7 +11,9 @@
 
 (def size 32)
 
+(def ESCAPE_KEY 27)
 
+(def SPACE_BAR 32)
 
 ;;;;;;;;;;;;;;; Utils ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -98,8 +100,8 @@
 (defmethod board-event :key
   [[_ key] app owner]
   (condp = key
-    27 (if (capturing? owner) (om/set-state! owner [:capture] false))
-    32 (wipe-board! app owner)
+    ESCAPE_KEY (if (capturing? owner) (om/set-state! owner [:capture] false))
+    SPACE_BAR (wipe-board! app owner)
     (prn key)))
 
 ;;;;;;;;;;;;;; Om components ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
