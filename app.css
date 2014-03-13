@@ -31,7 +31,7 @@ button.start {
 button.stop {
   position: absolute;
   bottom: 10px;
-  right: 310;
+  right: 310px;
 }
 select.predef {
   position: absolute;
@@ -40,6 +40,7 @@ select.predef {
 }
 
 #visualizer div:hover {
+
   box-shadow:
     white 1px 1px 0,
     white 1px -1px 0,
