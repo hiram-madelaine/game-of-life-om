@@ -14,6 +14,10 @@
 (def ESCAPE_KEY 27)
 
 (def SPACE_BAR 32)
+
+(def ENTER 13)
+
+(def BACK 8)
 ;;============ DOM related =================================
 
 ;;;;;;;;;;; Mark ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -66,13 +70,14 @@
   [gen]
   (reduce
    (fn [b c]
-     (let [l (->loc c)
-           b-size (dec (* size size))]
-       (if (<= 0 l b-size)
-         (assoc-in b [l 1] true)
+     (let [[y x]  c]
+       (if (and (< -1 y size) (< -1 x size))
+         (assoc-in b [(->loc c) 1] true)
          b)))
    empty-board gen))
 
+
+(<= 0 23 48)
 
 (defn make-step!
   "Swap! the world with the new state."
@@ -123,6 +128,8 @@
   (condp = key
     ESCAPE_KEY (if (capturing? owner) (om/set-state! owner [:capture] false))
     SPACE_BAR (wipe-board! app owner)
+    ENTER (board-event [:start nil] app owner)
+    BACK (board-event [:stop nil] app owner)
     (prn key)))
 
 
@@ -134,9 +141,10 @@
 
 
 (defmethod board-event :start
-  [[_ delay] app owner]
+  [[_ _] app owner]
   (when-not (om/get-state owner :timer-id)
-   (let [timer-id (js/setInterval make-step! delay)]
+   (let [delay (om/get-state owner :delay)
+         timer-id (js/setInterval make-step! delay)]
     (om/set-state! owner :timer-id timer-id ))))
 
 (defmethod board-event :stop
@@ -183,12 +191,12 @@
   [app owner]
   (reify
     om/IRenderState
-    (render-state [_ {:as state :keys [chan delay]}]
+    (render-state [_ {:as state :keys [chan]}]
                   (dom/div nil
                            (dom/button #js {:className "stop"
                                             :onClick #(put! chan [:stop nil])} "Stop" )
                            (dom/button #js {:className "start"
-                                            :onClick #(put! chan [:start delay])} "Start" )))))
+                                            :onClick #(put! chan [:start nil])} "Start" )))))
 
 
 (defn app-view
