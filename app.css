@@ -9,7 +9,7 @@ html, body, #visualizer {
 }
 
 body {
-  background-color: rgba(7, 7, 7, 0.9);
+  background-color: rgba(0, 0, 0, 1);
 }
 
 button, select {
@@ -60,37 +60,45 @@ button.stop {
 }
 select.predef {
   position: absolute;
-  top: 10px;
+  bottom: 10px;
   left: 10px;
 }
 
 #visualizer div:hover {
-
   box-shadow:
     white 1px 1px 0,
     white 1px -1px 0,
     white -1px 1px 0,
     white -1px -1px 0;
+
 }
 
 #visualizer div {
-  width: 2.084%;
-  height: 2.084%;
+  -webkit-border-radius: 1000px;
+  width: 3.125%;
+  height: 3.125%;
   float: left;
 }
 
-#visualizer div:nth-child(48n + 1) {
+#visualizer div:nth-child(32n + 1) {
   clear: left;
 }
 
 #visualizer div.live {
-   background-color: green;
+    background-image:
+    -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 9, from(#33FF33), to(black));
+
 }
 
-.marker {
-  background-color : pink;
-}
-.captured {
+#visualizer div.marker {
+    background-image:
+    -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 9, from(grey), to(black));
 
-  background-color : blue;
+}
+
+#visualizer div.captured {
+
+    background-image:
+    -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 8, from(orange), to(black));
+
 }

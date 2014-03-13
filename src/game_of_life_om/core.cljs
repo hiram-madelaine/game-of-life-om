@@ -9,7 +9,7 @@
 
 (enable-console-print!)
 
-(def size 48)
+(def size 32)
 
 (def ESCAPE_KEY 27)
 
