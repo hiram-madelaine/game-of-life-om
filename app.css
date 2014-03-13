@@ -9,7 +9,32 @@ html, body, #visualizer {
 }
 
 body {
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(7, 7, 7, 0.9);
+}
+
+button, select {
+
+    outline: none;
+    /* http://www.lab.tommasoraspo.com/simple-web-buttoms/ */
+    display: inline-block;
+    text-decoration: none;
+    font: bold 12px/12px HelveticaNeue, Arial;
+    padding: 8px 11px;
+    color: #555;
+    border: 1px solid #dedede;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+
+   background: #a5b8c6;
+    background: -webkit-gradient(linear, left top, left bottom, from(#becbd6), to(#88a1b4)); /*  WebKit */
+    background: -moz-linear-gradient(top,  #becbd6, #88a1b4);
+    border-color: #a2afb8 #8696a1 #6f818f;
+    color: #515f6a;
+    text-shadow: 0 1px 0 #c4d0d9;
+    -webkit-box-shadow: 0 1px 1px #d3d3d3, inset 0 1px 0 #ced8e0;
+    -moz-box-shadow: 0 1px 1px #d3d3d3, inset 0 1px 0 #ced8e0;
+    box-shadow: 0 1px 1px #d3d3d3, inset 0 1px 0 #ced8e0;
 }
 
 button.mark {
@@ -26,17 +51,17 @@ button.kill {
 button.start {
   position: absolute;
   bottom: 10px;
-  right: 350;
+  right: 230px;
 }
 button.stop {
   position: absolute;
   bottom: 10px;
-  right: 310px;
+  right: 170px;
 }
 select.predef {
   position: absolute;
-  bottom: 10px;
-  right: 160px;
+  top: 10px;
+  left: 10px;
 }
 
 #visualizer div:hover {

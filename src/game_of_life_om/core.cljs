@@ -223,7 +223,7 @@
                            (om/build start-button app {:state state})
                            (om/build selection-view app {:state state})
                            (dom/button #js {:onClick #(om/update! app #{})
-                                            :className "kill"} "wipe board !")
+                                            :className "kill"} "Wipe")
                            (om/build board-view app {:fn populate
                                                      :state state})))))
 
