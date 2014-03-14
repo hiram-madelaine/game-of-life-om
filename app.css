@@ -85,8 +85,8 @@ select.predef {
 }
 
 #visualizer div.live {
-    background-image:
-    -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 9, from(#33FF33), to(black));
+
+   background: radial-gradient(closest-side circle, #33FF33,black);
 
 }
 
