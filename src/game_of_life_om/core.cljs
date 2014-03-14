@@ -15,9 +15,9 @@
 
 (def SPACE_BAR 32)
 
-(def ENTER 13)
+(def RIGHT 39)
 
-(def BACK 8)
+(def LEFT 37)
 ;;============ DOM related =================================
 
 ;;;;;;;;;;; Mark ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -77,7 +77,6 @@
    empty-board gen))
 
 
-(<= 0 23 48)
 
 (defn make-step!
   "Swap! the world with the new state."
@@ -128,8 +127,8 @@
   (condp = key
     ESCAPE_KEY (if (capturing? owner) (om/set-state! owner [:capture] false))
     SPACE_BAR (wipe-board! app owner)
-    ENTER (board-event [:start nil] app owner)
-    BACK (board-event [:stop nil] app owner)
+    RIGHT (board-event [:start nil] app owner)
+    LEFT (board-event [:stop nil] app owner)
     (prn key)))
 
 
