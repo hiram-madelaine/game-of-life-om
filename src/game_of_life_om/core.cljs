@@ -20,6 +20,10 @@
 (def LEFT 37)
 ;;============ DOM related =================================
 
+
+
+(.initializeTouchEvents js/React true)
+
 ;;;;;;;;;;; Mark ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn mark!
@@ -152,6 +156,9 @@
     (js/clearInterval timer-id)
     (om/set-state! owner :timer-id nil )))
 
+(defmethod board-event :speed
+  [[_ speed] app owner]
+  (om/set-state! owner :delay speed))
 ;;;;;;;;;;;;;; Om components ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn cell-view
@@ -164,6 +171,9 @@
                         style (if (contains? captured id) (str style " captured" ) style)]
                     (dom/div #js {:className style
                                   :id id
+                                  :onTouchStart #(put! chan [:click id])
+                                  :onTouchMove  #(put! chan [:hover id])
+                                  :onTouchEnd #(put! chan [:click id])
                                   :onMouseOver #(put! chan [:hover id])
                                   :onClick #(put! chan [:click id])} "")))))
 (defn board-view
@@ -197,6 +207,22 @@
                            (dom/button #js {:className "start"
                                             :onClick #(put! chan [:start nil])} "Start" )))))
 
+(defn speed-view
+  [app owner]
+  (reify
+    om/IRenderState
+    (render-state [_ {:as state :keys [delay chan]}]
+                 (dom/input #js {:className "speed"
+                                 :type "range"
+                                 :min 0
+                                 :max 1000
+                                 :step 100
+                                 :value delay
+                                 :onChange #(do
+                                              (put! chan [:speed (-> % .-target .-value)])
+                                              (put! chan [:stop nil])
+                                              (put! chan [:start nil]))})
+                  )))
 
 (defn app-view
   "Display of the entire board."
@@ -219,6 +245,7 @@
     om/IRenderState
     (render-state [_ state]
                   (dom/div nil
+                           (om/build speed-view app {:state state})
                            (om/build start-button app {:state state})
                            (om/build selection-view app {:state state})
                            (dom/button #js {:onClick #(om/update! app #{})
