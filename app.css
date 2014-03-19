@@ -12,7 +12,7 @@ body {
   background-color: rgba(0, 0, 0, 1);
 }
 
-button, select {
+button, select, input {
 
     outline: none;
     /* http://www.lab.tommasoraspo.com/simple-web-buttoms/ */
@@ -37,31 +37,34 @@ button, select {
     box-shadow: 0 1px 1px #d3d3d3, inset 0 1px 0 #ced8e0;
 }
 
-button.mark {
+button, select, input {
+
   position: absolute;
   bottom: 10px;
+}
+
+label {
+color: grey;}
+
+input.speed {
+right: 450px;
+}
+
+button.mark {
   right: 10px;
 }
 
 button.kill {
-  position: absolute;
-  bottom: 10px;
   right: 70px;
 }
 button.start {
-  position: absolute;
-  bottom: 10px;
   right: 230px;
 }
 button.stop {
-  position: absolute;
-  bottom: 10px;
   right: 170px;
 }
 select.predef {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
+  right: 300;
 }
 
 #visualizer div:hover {
@@ -86,19 +89,19 @@ select.predef {
 
 #visualizer div.live {
 
-   background: radial-gradient(closest-side circle, #33FF33,black);
+   background: radial-gradient(10 circle  ,#33FF33,black);
 
 }
 
 #visualizer div.marker {
     background-image:
-    -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 9, from(grey), to(black));
+    -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 10, from(grey), to(black));
 
 }
 
 #visualizer div.captured {
 
     background-image:
-    -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 8, from(orange), to(black));
+    -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 10, from(orange), to(black));
 
 }
