@@ -4,17 +4,33 @@ Based on Christophe Grand's [solution](https://github.com/clojurebook/ClojurePro
 
 The visualisation is inspired by the excellent presentation of React.js by [steveluscher at react-supervanjs-2013](https://github.com/steveluscher/react-supervanjs-2013)
 
-The purpose is to help people discover and understand Om/React during a dojo at the Paris Clojure Meetup.
+The purpose of this app is to help people discover and understand Om/React.js
+
+It has been presented at the [Paris Clojure Meetup](http://www.meetup.com/Paris-Clojure-User-Group/events/170492492/).
 
 
 ## Getting starter
 
-Based on David Nolen's template : mies-om
+Based on David Nolen's template : [mies-om](https://github.com/swannodette/mies-om)
 
-`lein cljsbuild auto`
+To build the project :
+
+clone the repository
+
+`cd game-of-life-om`
+
+`lein cljsbuild auto game-of-life-om`
+
+When the ClojureScript is compiled, open index.html
+
+Alternativevly you can compile the project in advanced mode :
+
+`lein cljsbuild once release`
+
+When finished open : release.html
 
 
-Open the project with LightTable
+##  How to use the app
 
 You are presented en empty world, free of any cell.
 
@@ -31,7 +47,8 @@ You are presented en empty world, free of any cell.
 
 * Vary the next generation speed by using the slider
 
-* Click on the "Mark" button to color each location with direct DOM manipulation.
+* Click on the "Mark" button to color in grey each location with direct DOM manipulation. This should help understand the concept behind React.js : it reveals the fact that React.js re-render only the cells that change at each generation. 
+
 
 
 ## Resources
