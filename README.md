@@ -4,7 +4,9 @@ Based on Christophe Grand's [solution](https://github.com/clojurebook/ClojurePro
 
 The visualisation is inspired by the excellent presentation of React.js by [steveluscher at react-supervanjs-2013](https://github.com/steveluscher/react-supervanjs-2013)
 
-The purpose is to help people discover and understand Om/React during a dojo at the Paris Clojure Meetup.
+The purpose of this app is to help people discover and understand Om/React.js
+
+It has been presented at the [Paris Clojure Meetup](http://www.meetup.com/Paris-Clojure-User-Group/events/170492492/).
 
 
 ## Getting starter
