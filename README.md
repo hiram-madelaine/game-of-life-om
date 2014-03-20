@@ -11,10 +11,24 @@ The purpose is to help people discover and understand Om/React during a dojo at 
 
 Based on David Nolen's template : mies-om
 
-`lein cljsbuild auto`
+To build the project :
+
+clone the repository
+
+`cd game-of-life-om`
+
+`lein cljsbuild auto game-of-life-om`
+
+When the ClojureScript is compiled Open index.html
+
+Alternativevly you can compile in advanced mode :
+
+`lein cljsbuild once release`
+
+When finished open : release.html
 
 
-Open the project with LightTable
+##  How to use the app
 
 You are presented en empty world, free of any cell.
 
@@ -31,7 +45,8 @@ You are presented en empty world, free of any cell.
 
 * Vary the next generation speed by using the slider
 
-* Click on the "Mark" button to color each location with direct DOM manipulation.
+* Click on the "Mark" button to color in grey each location with direct DOM manipulation. This should help understand the concept behind React.js : it reveals the fact that React.js re-render only the cells that change at each generation. 
+
 
 
 ## Resources
