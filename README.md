@@ -11,7 +11,7 @@ It has been presented at the [Paris Clojure Meetup](http://www.meetup.com/Paris-
 
 ## Getting starter
 
-Based on David Nolen's template : mies-om
+Based on David Nolen's template : [mies-om](https://github.com/swannodette/mies-om)
 
 To build the project :
 
