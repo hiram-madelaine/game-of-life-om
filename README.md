@@ -21,9 +21,9 @@ clone the repository
 
 `lein cljsbuild auto game-of-life-om`
 
-When the ClojureScript is compiled Open index.html
+When the ClojureScript is compiled, open index.html
 
-Alternativevly you can compile in advanced mode :
+Alternativevly you can compile the project in advanced mode :
 
 `lein cljsbuild once release`
 
